@@ -2,40 +2,32 @@ import './styles.css'
 import ButtonInverse from "../../../components/ButtonInverse";
 import ButtonPrimary from "../../../components/ButtonPrimary";
 import ProductDetailsCard from "../../../components/ProductDetailsCard";
-import { ProductDTO } from '../../../models/product';
+import * as productService from '../../../services/product-service';
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const product: ProductDTO = {
-    id: 2,
-    name: "Smart TV",
-    description: "Está TV é muito bonita",
-    imgUrl: "https://a-static.mlcdn.com.br/450x450/smart-tv-50-hq-4k-conversor-digital-externo-3-hdmi-2-usb-wi-fi-android-11-e-design-slim/comprebel2/33154/ee572ff89335894edcc1b71aad551b12.jpeg",
-    price: 2500.99,
-    categories: [
-        {
-            id: 2,
-            name: "Eletrônicos"
-        },
-        {
-            id: 3,
-            name: "Computadores"
-        },
-        {
-            id: 4,
-            name: "Importados"
-        }
-    ]
-}
 
 export default function ProductDetails() {
+
+
+    const params = useParams();
+
+    const product = productService.findById(Number(params.productId));
+
     return (
-            <main>
-                <section id="product-details-section" className="dsc-container">
+        <main>
+            <section id="product-details-section" className="dsc-container">
+                {
+                    product &&
                     <ProductDetailsCard product={product} />
-                    <div className="dsc-btn-page-container">
-                        <ButtonPrimary text="Comprar" />
+                }
+                <div className="dsc-btn-page-container">
+                    <ButtonPrimary text="Comprar" />
+                    <Link to="/">
                         <ButtonInverse text="Início" />
-                    </div>
-                </section>
-            </main>
+                    </Link>
+                </div>
+            </section>
+        </main>
     );
 }
