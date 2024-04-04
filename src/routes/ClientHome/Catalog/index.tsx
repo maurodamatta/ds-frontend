@@ -6,8 +6,6 @@ import { ProductDTO } from '../../../models/product';
 import { useEffect, useState } from 'react';
 import * as productService from '../../../services/product-service';
 
-
-
 export default function Catalog() {
 
     const [products, setProducts] = useState<ProductDTO[]>([]);
