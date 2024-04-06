@@ -5,7 +5,7 @@ type Props = {
     onSearch: Function;
 }
 
-export default function SearcBar({ onSearch }: Props) {
+export default function SearchBar({ onSearch }: Props) {
 
     const [text, setText] = useState("");
 
