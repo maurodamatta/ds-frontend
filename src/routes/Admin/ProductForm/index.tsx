@@ -20,12 +20,12 @@ export default function ProductForm() {
             placeholder: "Nome",
         },
         price: {
-            value: 200,
+            value: "",
             id: "price",
             name: "price",
             type: "number",
             placeholder: "Preço",
-            validation: function(value: any) {
+            validation: function (value: any) {
                 return Number(value) > 0;
             },
             message: "Favor informar um valor positivo"
@@ -40,11 +40,7 @@ export default function ProductForm() {
     });
 
     useEffect(() => {
-
-        const obj = forms.validate(formData, "price");
-        console.log(obj);
-
-        if (isEditing){
+        if (isEditing) {
             productService.findById(Number(params.productId))
                 .then(response => {
                     const newFormData = forms.updateAll(formData, response.data);
@@ -54,7 +50,9 @@ export default function ProductForm() {
     }, []);
 
     function handleInputChange(event: any) {
-        setFormData(forms.update(formData, event.target.name, event.target.value));
+        const dataUpdated = forms.update(formData, event.target.name, event.target.value);
+        const dataValidated = forms.validate(dataUpdated, event.target.name);
+        setFormData(dataValidated);
     }
 
     return (
@@ -71,12 +69,14 @@ export default function ProductForm() {
                                     onChange={handleInputChange}
                                 />
                             </div>
+                            <div className='dsc-form-error'>{formData.name.message}</div>
                             <div>
                                 <FormInput
                                     {...formData.price}
                                     className="dsc-form-control"
                                     onChange={handleInputChange}
                                 />
+                                <div className='dsc-form-error'>{formData.price.message}</div>
                             </div>
                             <div>
                                 <FormInput
