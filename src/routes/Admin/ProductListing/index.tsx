@@ -8,6 +8,8 @@ import SearchBar from '../../../components/SearchBar';
 import ButtonNextPage from '../../../components/ButtonNextPage';
 import DialogInfo from '../../../components/DialogInfo';
 import DialogConfirmation from '../../../components/DialogConfirmation';
+import ButtonInverse from '../../../components/ButtonInverse';
+import { useNavigate } from 'react-router-dom';
 
 type QueryParams = {
     page: number;
@@ -16,12 +18,14 @@ type QueryParams = {
 
 export default function ProductListing() {
 
-    const [dialogInfoData, setDialogInfoData] = useState ({
+    const navigate = useNavigate();
+
+    const [dialogInfoData, setDialogInfoData] = useState({
         visible: false,
         message: "Operação com Sucesso!"
     });
 
-    const [dialogConfirmationData, setDialogConfirmationData] = useState ({
+    const [dialogConfirmationData, setDialogConfirmationData] = useState({
         visible: false,
         id: 0,
         message: "Tem certeza?"
@@ -45,6 +49,10 @@ export default function ProductListing() {
             });
     }, [queryParams]);
 
+    function handleNewProductClick(){
+        navigate("/admin/products/create");
+    }
+
     function handleSearch(searchText: string) {
         setProducts([]);
         setQueryParams({ ...queryParams, page: 0, name: searchText });
@@ -53,13 +61,13 @@ export default function ProductListing() {
     function handleNextPageClick() {
         setQueryParams({ ...queryParams, page: queryParams.page + 1 });
     }
-    
+
     function handleDialogInfoClose() {
-        setDialogInfoData({...dialogInfoData, visible: false});
+        setDialogInfoData({ ...dialogInfoData, visible: false });
     }
 
     function handleDeleteClick(productId: number) {
-        setDialogConfirmationData({...dialogConfirmationData, id: productId, visible: true});
+        setDialogConfirmationData({ ...dialogConfirmationData, id: productId, visible: true });
     }
 
     function handleDialogConfirmationAnswer(answer: boolean, productId: number) {
@@ -77,19 +85,21 @@ export default function ProductListing() {
                 });
         }
 
-        setDialogConfirmationData({...dialogConfirmationData, visible: false});
+        setDialogConfirmationData({ ...dialogConfirmationData, visible: false });
     }
-    
+
     return (
         <main>
             <section id="product-listing-section" className="dsc-container">
                 <h2 className="dsc-section-title dsc-mb20">Cadastro de produtos</h2>
 
                 <div className="dsc-btn-page-container dsc-mb20">
-                    <div className="dsc-btn dsc-btn-white">Novo</div>
+                    <div onClick={handleNewProductClick}>
+                        <ButtonInverse text="Novo" />
+                    </div>
                 </div>
 
-                <SearchBar onSearch={handleSearch}/>
+                <SearchBar onSearch={handleSearch} />
 
                 <table className="dsc-table dsc-mb20 dsc-mt20">
                     <thead>
@@ -118,27 +128,27 @@ export default function ProductListing() {
                     </tbody>
                 </table>
 
-                {   
+                {
                     !isLastPage &&
                     <ButtonNextPage onNextPage={handleNextPageClick} />
                 }
             </section>
             {
                 dialogInfoData.visible &&
-                <DialogInfo 
-                    message={dialogInfoData.message} 
+                <DialogInfo
+                    message={dialogInfoData.message}
                     onDialogClose={handleDialogInfoClose}
                 />
-            }   
+            }
 
             {
                 dialogConfirmationData.visible &&
                 <DialogConfirmation
                     id={dialogConfirmationData.id}
-                    message={dialogConfirmationData.message} 
+                    message={dialogConfirmationData.message}
                     onDialogAnswer={handleDialogConfirmationAnswer}
                 />
-            }          
+            }
         </main>
     )
 }
