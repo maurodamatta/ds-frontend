@@ -28,7 +28,7 @@ export default function ProductForm() {
             validation: function (value: any) {
                 return Number(value) > 0;
             },
-            message: "Favor informar um valor positivo"
+            message: "Informe um preço positivo",
         },
         imgUrl: {
             value: "",
@@ -55,6 +55,11 @@ export default function ProductForm() {
         setFormData(dataValidated);
     }
 
+    function handleTurnDirty(name: string) {
+        const newFormData = forms.toDirty(formData, name);
+        setFormData(newFormData);
+    }
+
     return (
         <main>
             <section id="product-form-section" className="dsc-container">
@@ -66,22 +71,25 @@ export default function ProductForm() {
                                 <FormInput
                                     {...formData.name}
                                     className="dsc-form-control"
+                                    onTurnDirty={handleTurnDirty}
                                     onChange={handleInputChange}
                                 />
+                                <div className="dsc-form-error">{formData.name.message}</div>
                             </div>
-                            <div className='dsc-form-error'>{formData.name.message}</div>
                             <div>
                                 <FormInput
                                     {...formData.price}
                                     className="dsc-form-control"
+                                    onTurnDirty={handleTurnDirty}
                                     onChange={handleInputChange}
                                 />
-                                <div className='dsc-form-error'>{formData.price.message}</div>
+                                <div className="dsc-form-error">{formData.price.message}</div>
                             </div>
                             <div>
                                 <FormInput
                                     {...formData.imgUrl}
                                     className="dsc-form-control"
+                                    onTurnDirty={handleTurnDirty}
                                     onChange={handleInputChange}
                                 />
                             </div>
