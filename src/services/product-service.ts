@@ -1,4 +1,4 @@
-import { Axios, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import { requestBackend } from "../utils/requests";
 import { ProductDTO } from "../models/product";
 

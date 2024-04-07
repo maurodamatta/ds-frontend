@@ -73,9 +73,19 @@ export function dirtyAndValidateAll(inputs: any) {
 
 export function hasAnyInvalid(inputs: any) {
     for (var name in inputs) {
-        if(inputs[name].dirty === "true" && inputs[name].invalid === "true") {
+        if (inputs[name].dirty === "true" && inputs[name].invalid === "true") {
             return true;
         }
     }
     return false;
+}
+
+export function setBackendErrors(inputs: any, errors: any[]) {
+    const newInputs = { ...inputs };
+    errors.forEach(item => {
+        newInputs[item.fieldName].message = item.message;
+        newInputs[item.fieldName].dirty = "true";
+        newInputs[item.fieldName].invalid = "true";
+    });
+    return newInputs;
 }
